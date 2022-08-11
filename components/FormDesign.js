@@ -1,8 +1,12 @@
 import { useState } from "react";
-import { StyleSheet, View, TextInput, Linking, Image } from "react-native";
-import { Button, CheckBox } from "react-native-elements";
+import { StyleSheet, View, TextInput, Image} from "react-native";
+import { Button, CheckBox} from "react-native-elements";
+import { ActivityIndicator } from "react-native";
 const Form = () => {
-    const [isChecked, setChecked] = useState(false)
+
+    const [checked,setChecked] = useState(false)
+    const [indicatorShow,setIndicator] = useState(false)
+
 
     return (
         <View style={{
@@ -13,11 +17,13 @@ const Form = () => {
                 alignItems: 'center', justifyContent: 'center'
             }}>
 
+
                 <View>
-                   <Image
-                   uri = 'assets:/'
-                   style={{width:40,height:40}}
-                   />
+                    <Image
+                        source={require("../images/account.png")}
+                        style={{ width: 160, height: 160 }}
+
+                    />
                 </View>
 
                 <View style={{ flexDirection: "row" }}>
@@ -61,14 +67,19 @@ const Form = () => {
                 <View>
                     <CheckBox
                         title='I accept the Terms of Use & Privacy Policy'
-                        checked={isChecked}
-                        onPress={() => setChecked(!isChecked)}
                         checkedColor="white"
+                        checked = {checked}
+                        onPress={()=>{ setChecked(!checked),setIndicator(false)}}
                         containerStyle={{ backgroundColor: 'transparent' }}
                         textStyle={{ color: "white", fontSize: 12 }}
 
                     />
                 </View>
+
+                <ActivityIndicator
+                size='large'
+                animating={indicatorShow}
+                />
 
             </View>
 
@@ -76,7 +87,11 @@ const Form = () => {
                 <Button
                     title="Sign Up"
                     type="solid"
-                    buttonStyle={{ borderRadius: 8, backgroundColor: '#00c04b' }}
+                    disabled={!checked}
+                    buttonStyle={{ borderRadius: 8,
+                        backgroundColor : checked ? "#00c04b" : 'gray',
+                    }}
+                    onPress={()=>{setIndicator(true)}}
                 />
             </View>
         </View>
